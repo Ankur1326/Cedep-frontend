@@ -3,14 +3,17 @@ import { FaEyeSlash, FaEye } from 'react-icons/fa'; // Import icons
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../helper/axiosInstance';
 import { UserType } from '../context/UserContext';
+import ModalLoader from '../components/ModalLoader';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLoginClick = async () => {
+    setLoading(true)
     try {
       const response = await axiosInstance.post('/login', {
         identifier: email,
@@ -26,11 +29,14 @@ function LoginPage() {
       navigate('/');
     } catch (error) {
       console.error('Error logging in:', error);
+    } finally {
+      setLoading(false)
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      {loading && <ModalLoader />}
       <div className="w-full max-w-2xl p-8 space-y-6 bg-white rounded-lg shadow-lg">
         <div className="flex justify-center mb-3">
           <img src="/logo.png" alt="Logo" className="w-24 h-16" />

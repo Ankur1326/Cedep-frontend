@@ -1,33 +1,35 @@
 // DashboardPage.js
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FaEdit, FaCheckCircle, FaTimesCircle, FaSignOutAlt } from 'react-icons/fa';
 import AdminList from '../components/AdminList';
 import axiosInstance from '../helper/axiosInstance';
 import LogoutButton from '../components/LogoutButton';
+import Loader from '../components/Loader';
 
 function DashboardPage() {
   const [admin, setAdmin] = useState({})
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const handleFetchCurrentAdmin = async () => {
-      try {
-        const respose = await axiosInstance.get('/current-admin')
-        setAdmin(respose.data.data)
-      } catch (error) {
-        setError('Failed to fetch admin data.');
-      } finally {
-        setLoading(false);  // Set loading to false once fetching is done
-      }
+  const handleFetchCurrentAdmin = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get('/current-admin');
+      setAdmin(response.data.data);
+    } catch (error) {
+      setError('Failed to fetch admin data.');
+    } finally {
+      setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
     handleFetchCurrentAdmin()
   }, [])
 
 
   // Handle loading state
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <Loader />;
   }
 
   // Handle error state
@@ -89,4 +91,4 @@ function DashboardPage() {
   );
 }
 
-export default DashboardPage;
+export default React.memo(DashboardPage);

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaPaperPlane, FaCheck, FaEyeSlash, FaEye } from 'react-icons/fa'; // Import icons
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../helper/axiosInstance';
+import ModalLoader from '../components/ModalLoader';
 
 function RegisterPage() {
     const navigate = useNavigate();
@@ -12,6 +13,7 @@ function RegisterPage() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const [otp, setOtp] = useState('');
     const [isOtpSent, setIsOtpSent] = useState(false);
@@ -19,6 +21,7 @@ function RegisterPage() {
 
     const handleSendOtpClick = async () => {
         try {
+            setLoading(true)
             console.log(email);
             if (!email) {
                 alert("Enter email to send otp")
@@ -32,6 +35,8 @@ function RegisterPage() {
         } catch (error) {
             console.error('Error sending OTP:', error);
             alert('Error sending OTP');
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -88,6 +93,7 @@ function RegisterPage() {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            {loading && <ModalLoader />}
             <div className="w-full max-w-2xl p-8 space-y-6 bg-white rounded-lg shadow-lg">
                 <div className="flex justify-center mb-3">
                     <img src="/logo.png" alt="Logo" className="w-24 h-16" />
@@ -152,7 +158,7 @@ function RegisterPage() {
                     </div>
                     {/* otp field and verify btn */}
                     {
-                        true ? (
+                        isOtpSent ? (
                             <div>
                                 <label htmlFor="otp" className="block text-start text-sm font-medium text-gray-700">
                                     OTP
