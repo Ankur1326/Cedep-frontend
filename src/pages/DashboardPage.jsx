@@ -1,5 +1,5 @@
 // DashboardPage.js
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaEdit, FaCheckCircle, FaTimesCircle, FaSignOutAlt } from 'react-icons/fa';
 import AdminList from '../components/AdminList';
 import axiosInstance from '../helper/axiosInstance';
@@ -11,7 +11,7 @@ function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const handleFetchCurrentAdmin = useCallback(async () => {
+  const handleFetchCurrentAdmin = async () => {
     try {
       const response = await axiosInstance.get('/current-admin');
       setAdmin(response.data.data);
@@ -20,7 +20,7 @@ function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
   useEffect(() => {
     handleFetchCurrentAdmin()
@@ -91,4 +91,4 @@ function DashboardPage() {
   );
 }
 
-export default React.memo(DashboardPage);
+export default DashboardPage;
