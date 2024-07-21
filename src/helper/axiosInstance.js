@@ -6,6 +6,7 @@ let accessToken = '';
 
 const initializeAccessToken = async () => {
     accessToken = localStorage.getItem("accessToken");
+
 };
 // Call initializeAccessToken to fetch and set accessToken
 initializeAccessToken();

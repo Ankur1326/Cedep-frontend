@@ -6,11 +6,17 @@ import PrivateRoute from './components/PrivateRoute'
 import HomePage from './pages/HomePage'
 import DashboardPage from './pages/DashboardPage'
 import StudentPage from './pages/StudentPage'
+import { UserContext } from './context/UserContext'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <PrivateRoute><HomePage /></PrivateRoute>,
+    element:
+      <UserContext>
+        <PrivateRoute>
+          <HomePage />
+        </PrivateRoute>
+      </UserContext>,
     children: [
       { path: 'dashboard', element: <DashboardPage /> },
       { path: 'student', element: <StudentPage /> },

@@ -3,25 +3,12 @@ import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import axiosInstance from '../helper/axiosInstance';
 import ConfirmationModal from '../modals/ConfirmationModal';
 
-const AdminList = ({ handleSuperAdminStatus }) => {
+const AdminList = () => {
   const [otherRegisteredAdmins, setOtherRegisteredAdmins] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState(null);
   const [modalMessage, setModalMessage] = useState('');
-
-  const toggleAdminVerificationStatus = async (id) => {
-    try {
-      await axiosInstance.patch(`/toggle-verified/${id}`);
-      setOtherRegisteredAdmins((prevAdmins) =>
-        prevAdmins.map((admin) =>
-          admin._id === id ? { ...admin, verifiedAdmin: !admin.verifiedAdmin } : admin
-        )
-      );
-    } catch (error) {
-      console.error('Error toggling admin verified status:', error);
-      throw error;
-    }
-  };
+  const [action, setAction] = useState('');
 
   useEffect(() => {
     const getAllAdminsExceptSelf = async () => {
@@ -37,14 +24,51 @@ const AdminList = ({ handleSuperAdminStatus }) => {
     getAllAdminsExceptSelf()
   }, [])
 
-  const handleToggleClick = (admin) => {
+  const toggleAdminVerificationStatus = async (id) => {
+    try {
+      await axiosInstance.patch(`/toggle-verified/${id}`);
+      setOtherRegisteredAdmins((prevAdmins) =>
+        prevAdmins.map((admin) =>
+          admin._id === id ? { ...admin, verifiedAdmin: !admin.verifiedAdmin } : admin
+        )
+      );
+    } catch (error) {
+      console.error('Error toggling admin verified status:', error);
+      throw error;
+    }
+  };
+
+  const toggleSuperAdminStatus = async (id) => {
+    try {
+      await axiosInstance.patch(`/toggle-super-admin/${id}`);
+      setOtherRegisteredAdmins((prevAdmins) =>
+        prevAdmins.map((admin) =>
+          admin._id === id ? { ...admin, isSuperAdmin: !admin.isSuperAdmin } : admin
+        )
+      );
+    } catch (error) {
+      console.error('Error toggling super admin status:', error);
+      throw error;
+    }
+  };
+
+  const handleToggleClick = (admin, action) => {
     setSelectedAdmin(admin)
-    setModalMessage(`Are you sure you want to ${admin.verifiedAdmin ? 'unverify' : 'verify'} this admin?`);
+    setAction(action)
+    if (action === "toggleVerification") {
+      setModalMessage(`Are you sure you want to ${admin.verifiedAdmin ? 'unverify' : 'verify'} this admin?`);
+    } else {
+      setModalMessage(`Are you sure you want to ${admin.isSuperAdmin ? 'Remove Super Admin' : 'Make Super Admin'} this admin?`);
+    }
     setIsModalOpen(true);
   }
 
   const handleConfirmToggle = () => {
-    toggleAdminVerificationStatus(selectedAdmin._id);
+    if (action === "toggleVerification") {
+      toggleAdminVerificationStatus(selectedAdmin._id);
+    } else {
+      toggleSuperAdminStatus(selectedAdmin._id)
+    }
     setIsModalOpen(false);
     setSelectedAdmin(null);
   };
@@ -89,26 +113,17 @@ const AdminList = ({ handleSuperAdminStatus }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    onClick={() => handleToggleClick(admin)}
-                    className={`px-4 py-2 rounded text-white ${admin.verifiedAdmin ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'} mr-2`}
+                    onClick={() => handleToggleClick(admin, 'toggleVerification')}
+                    className={`px-4 py-2 rounded text-white ${admin.verifiedAdmin ? 'bg-[#32C5D2] hover:bg-[#28a0ab]' : 'bg-green-600 hover:bg-green-700'} mr-2`}
                   >
                     {admin.verifiedAdmin ? 'Unverify' : 'Verify'}
                   </button>
-                  {admin.isSuperAdmin ? (
-                    <button
-                      onClick={() => handleSuperAdminStatus(admin._id, false)}
-                      className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                    >
-                      Remove Super Admin
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleSuperAdminStatus(admin._id, true)}
-                      className="px-4 py-2 bg-[#2F89E3] text-white rounded hover:bg-[#297aca]"
-                    >
-                      Make Super Admin
-                    </button>
-                  )}
+                  <button
+                    onClick={() => handleToggleClick(admin, "toggleSuperAdmin")}
+                    className={`px-4 py-2 rounded text-white ${admin.isSuperAdmin ? 'bg-[#8E9BAE] hover:bg-[#788392]' : 'bg-[#2F89E3] hover:bg-[#297aca]'}`}
+                  >
+                    {admin.isSuperAdmin ? 'Remove Super Admin' : 'Make Super Admin'}
+                  </button>
                 </td>
               </tr>
             ))}
