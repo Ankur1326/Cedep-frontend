@@ -20,12 +20,10 @@ function LoginPage() {
         password: password,
       });
 
-      // Store tokens and user info
-      console.log("response.data : ", response.data);
-      localStorage.setItem('accessToken', response.data.data.accessToken);
-      // localStorage.setItem('admin', JSON.stringify(response.data.admin));
+      // console.log("response.data : ", response.data);
+      localStorage.setItem('accessToken', JSON.stringify(response.data.data.accessToken));
 
-      // // Navigate to the admin dashboard or another protected route
+      // Navigate to the admin dashboard or another protected route
       navigate('/');
     } catch (error) {
       console.error('Error logging in:', error);

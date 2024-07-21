@@ -26,7 +26,6 @@ function DashboardPage() {
     handleFetchCurrentAdmin()
   }, [])
 
-
   // Handle loading state
   if (loading) {
     return <Loader />;

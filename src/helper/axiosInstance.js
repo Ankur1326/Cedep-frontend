@@ -2,15 +2,6 @@ import axios from 'axios';
 // import jwt_decode from 'jwt-decode';
 import { base_url } from './helper';
 
-let accessToken = '';
-
-const initializeAccessToken = async () => {
-    accessToken = localStorage.getItem("accessToken");
-
-};
-// Call initializeAccessToken to fetch and set accessToken
-initializeAccessToken();
-
 const axiosInstance = axios.create({
     baseURL: base_url,
     timeout: 10000, // 10 seconds
@@ -22,6 +13,10 @@ const axiosInstance = axios.create({
 // Interceptor for request to set the Authorization header dynamically
 axiosInstance.interceptors.request.use(
     async (config) => {
+        // Retrieve and parse the access token
+        const tokenFromStorage = localStorage.getItem("accessToken");
+        const accessToken = tokenFromStorage ? JSON.parse(tokenFromStorage) : '';
+        
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
