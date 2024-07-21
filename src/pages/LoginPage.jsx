@@ -20,6 +20,10 @@ function LoginPage() {
         password: password,
       });
 
+      const accessToken = localStorage.getItem("accessToken")
+      if (accessToken) {
+        localStorage.removeItem("accessToken")
+      }
       // console.log("response.data : ", response.data);
       localStorage.setItem('accessToken', JSON.stringify(response.data.data.accessToken));
 
