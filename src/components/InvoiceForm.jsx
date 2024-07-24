@@ -21,6 +21,7 @@ const getTodayDate = () => {
 const InvoiceForm = () => {
     const dispatch = useDispatch();
     const { invoice, loading, error } = useSelector((state) => state.invoice);
+
     const registrationInputRef = useRef(null);
     const [formdata, setFormdata] = useState({
         fullName: '',
@@ -32,7 +33,7 @@ const InvoiceForm = () => {
             invoiceDate: getTodayDate(),
             modeOfPayment: 'Cash',
             discount: '0',
-            particulars: 'Tution Fees',
+            particular: 'Tuition Fees',
             subTotal: '',
             taxableAmount: '',
             VAT: '',
@@ -132,17 +133,18 @@ const InvoiceForm = () => {
         }
     };
 
-    const handleParticularChange = (index, e) => {
-        const { name, value } = e.target;
-        const updatedParticulars = formdata.particulars.map((particular, idx) =>
-            idx === index ? { ...particular, [name]: value } : particular
-        );
-        setFormdata({ ...formdata, particulars: updatedParticulars });
-    };
+    // const handleParticularChange = (index, e) => {
+    //     const { name, value } = e.target;
+    //     const updatedParticulars = formdata.particulars.map((particular, idx) =>
+    //         idx === index ? { ...particular, [name]: value } : particular
+    //     );
+    //     setFormdata({ ...formdata, particulars: updatedParticulars });
+    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log("formdata : ", formdata);
+        console.log("formdata : ", formdata);
+
         try {
             dispatch(createInvoice(formdata))
                 .unwrap()
@@ -159,7 +161,7 @@ const InvoiceForm = () => {
                             invoiceDate: getTodayDate(),
                             modeOfPayment: 'Cash',
                             discount: '0',
-                            particulars: 'Tuition Fees',
+                            particular: 'Tuition Fees',
                             subTotal: '',
                             taxableAmount: '',
                             VAT: '',
@@ -180,16 +182,16 @@ const InvoiceForm = () => {
     return (
         <div className="max-w-6xl mx-auto p-8 mt-8 bg-gray-50 rounded-lg shadow-md">
             <h1 className="text-2xl font-bold text-blue-700 mb-2">Create Invoice</h1>
-            <div className="flex justify-between items-center mb-6">
-                <img src="/public/logo.png" alt="CEDEP Logo" className="h-12" />
-                <div className="">
-                    <p className="text-gray-600 text-sm text-end">VAT Number: 302833348</p>
-                    <div className="text-end mt-4">
-                        <h2 className="text-[16px] font-semibold text-gray-800">Nepal Centre for Development & Policy Studies Pvt. Ltd.</h2>
+            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+                <img src="/public/logo.png" alt="CEDEP Logo" className="h-12 mb-4 md:mb-0" />
+                <div className="text-center md:text-right">
+                    <p className="text-gray-600 text-sm">VAT Number: 302833348</p>
+                    <div className="mt-4">
+                        <h2 className="text-lg font-semibold text-gray-800">Nepal Centre for Development & Policy Studies Pvt. Ltd.</h2>
                         <p className="text-gray-600 text-sm">NAME Building, Ramshah Path</p>
                         <p className="text-gray-600 text-sm">Putalisadak, KTM, Nepal</p>
                     </div>
-                    <div className="text-end mt-4">
+                    <div className="mt-4">
                         <p className="text-gray-600 text-sm">Website: <a href="http://www.cedepnepal.com.np" className="text-blue-500 underline">www.cedepnepal.com.np</a></p>
                         <p className="text-gray-600 text-sm">Email: <a href="mailto:info.cedep@gmail.com" className="text-blue-500 underline">info.cedep@gmail.com</a></p>
                         <p className="text-gray-600 text-sm">Phone: +977 1 5320255</p>
@@ -227,10 +229,9 @@ const InvoiceForm = () => {
 
 
             <form onSubmit={handleSubmit} className="space-y-6">
-
-                <div className="flex items-center justify-between">
-                    <div>
-                        <label className="text-start block text-sm font-medium text-gray-700">Invoice Number</label>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex-1">
+                        <label className="block text-center md:text-start text-sm font-medium text-gray-700">Invoice Number</label>
                         <input
                             type="text"
                             name="invoiceNum"
@@ -241,8 +242,8 @@ const InvoiceForm = () => {
                             className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
                         />
                     </div>
-                    <div>
-                        <label className="text-start block text-sm font-medium text-gray-700">Invoice Date</label>
+                    <div className="flex-1">
+                        <label className="block text-center md:text-start text-sm font-medium text-gray-700">Invoice Date</label>
                         <input
                             type="date"
                             name="invoiceDate"
@@ -252,9 +253,10 @@ const InvoiceForm = () => {
                         />
                     </div>
                 </div>
-                <div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
+
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
                     <div>
-                        <label className="text-start block text-sm font-medium text-gray-700">Name</label>
+                        <label className="block text-center md:text-start text-sm font-medium text-gray-700">Name</label>
                         <input
                             type="text"
                             name="fullName"
@@ -265,7 +267,7 @@ const InvoiceForm = () => {
                         />
                     </div>
                     <div>
-                        <label className="text-start block text-sm font-medium text-gray-700">Group</label>
+                        <label className="block text-center md:text-start text-sm font-medium text-gray-700">Group</label>
                         <input
                             type="text"
                             name="groupName"
@@ -276,7 +278,7 @@ const InvoiceForm = () => {
                         />
                     </div>
                     <div>
-                        <label className="text-start block text-sm font-medium text-gray-700">Mobile</label>
+                        <label className="block text-center md:text-start text-sm font-medium text-gray-700">Mobile</label>
                         <input
                             type="text"
                             name="mobileNumber"
@@ -331,15 +333,16 @@ const InvoiceForm = () => {
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200">1</td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200">
                                     <select
-                                        name="particulars"
-                                        value={formdata.particulars}
+                                        name="particular"
+                                        required
+                                        value={formdata.invoice.particular}
                                         onChange={handleChange}
                                         className="mt-1 block w-full px-3 py-2 border border-gray-400 rounded-md text-[14px] focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
                                     >
-                                        <option value="Tuition Fees">Tuition Fees</option>
-                                        <option value="Meterials Fees">Meterials Fees</option>
-                                        <option value="Exam Fees">Exam Fees</option>
-                                        <option value="Library Fees">Library Fees</option>
+                                        <option value='Tuition Fees'>Tuition Fees</option>
+                                        <option value='Materials Fees'>Meterials Fees</option>
+                                        <option value='Exam Fees'>Exam Fees</option>
+                                        <option value='Library Fees'>Library Fees</option>
                                     </select>
                                 </td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900 border-r border-gray-200"></td>
@@ -386,7 +389,7 @@ const InvoiceForm = () => {
                                         required
                                         value={formdata.invoice.grandTotal}
                                         onChange={handleChange}
-                                        className="mt-1 block w-full px-3 py-2 border border-gray-400 rounded-md text-[14px] focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
+                                        className="mt-1 block w-full min-w-36 px-3 py-2 border border-gray-400 rounded-md text-[14px] focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
                                     />
                                 </td>
                             </tr>

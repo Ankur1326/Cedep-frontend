@@ -72,7 +72,6 @@ function StudentPage() {
   return (
     <div>
       <CedepInformation />
-
       <div className="bg-white p-6 rounded-lg shadow-lg">
         {/* Personal Details */}
         <h3 className="text-xl font-bold text-gray-800 mb-4">Personal Details</h3>

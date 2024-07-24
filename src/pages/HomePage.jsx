@@ -7,7 +7,7 @@ function HomePage() {
     return (
         <div className="flex flex-col min-h-screen w-full">
             <Header />
-            <main className="flex-1 px-4 py-6 bg-gray-100 w-full">
+            <main className="flex-1 px-4 py-6 bg-gray-100 w-full mt-16">
                 <Outlet />
             </main>
         </div>

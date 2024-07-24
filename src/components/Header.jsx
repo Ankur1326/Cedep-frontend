@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaUserPlus, FaTachometerAlt, FaSignOutAlt } from 'react-icons/fa'; // Import icons
 import LogoutButton from './LogoutButton';
 import ConfirmationModal from '../modals/ConfirmationModal';
 
 const Header = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const location = useLocation();
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
@@ -18,43 +20,70 @@ const Header = () => {
         navigate('/login');
     };
 
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen)
+    }
+
+    const getLinkClass = (path) =>
+        location.pathname === path
+            ? 'block py-2 px-4 hover:bg-gray-700 rounded text-yellow-400 bg-gray-600'
+            : 'block py-2 px-4 hover:bg-gray-700 rounded hover:text-yellow-400 transition-colors';
+
     return (
-        <header className="bg-[#3B3F51] text-white shadow-md w-full">
-            <div className="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
-                {/* Logo Section */}
-                <div className="flex items-center">
-                    <Link to="/" className="flex items-center">
-                        <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
-                        <span className="ml-3 text-2xl font-bold text-yellow-400">Admin Panel</span>
+        <header className="bg-white shadow-md text-black p-4 fixed w-full z-10 ">
+            <div className="container mx-auto flex justify-between items-center">
+                <div className="text-2xl flex items-center font-bold">
+                    <Link to="/">
+                        <img src="/logo.png" alt="Logo" className="w-12 object-contain" />
                     </Link>
+                    <span className="ml-3 text-xl md:text-2xl font-bold text-yellow-400">Admin Panel</span>
                 </div>
-
-                {/* Navigation Links */}
-                <nav className="flex space-x-11">
-                    <div className='flex space-x-6'>
-                        <Link to="/invoice" className="flex items-center text-gray-300 hover:text-yellow-400 transition-colors">
-                            {/* <FaTachometerAlt className="text-xl mr-2" /> */}
-                            <span className="font-medium">Invoice</span>
-                        </Link>
-                        <Link to="/student" className="flex items-center text-gray-300 hover:text-yellow-400 transition-colors">
-                            <FaUserPlus className="text-xl mr-2" />
-                            <span className="font-medium">Register Student</span>
-                        </Link>
-                        <Link to="/dashboard" className="flex items-center text-gray-300 hover:text-yellow-400 transition-colors">
-                            <FaTachometerAlt className="text-xl mr-2" />
-                            <span className="font-medium">Dashboard</span>
-                        </Link>
-                    </div>
-
-                    {/* log out btn      */}
+                <button
+                    onClick={toggleMenu}
+                    className="lg:hidden flex items-center"
+                >
+                    <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 6h16M4 12h16m-7 6h7"
+                        />
+                    </svg>
+                </button>
+                <nav
+                    className={`lg:flex lg:items-center lg:space-x-6 lg:bg-transparent bg-white ${isMenuOpen ? 'absolute top-16 right-0 w-50 block shadow-lg' : 'hidden'
+                        }`}
+                >
+                    <Link to="/" onClick={() => setIsMenuOpen(false)} className={getLinkClass('/')}>
+                        Home
+                    </Link>
+                    <Link to="/invoice" onClick={() => setIsMenuOpen(false)} className={getLinkClass('/invoice')}>
+                        <span className="">Invoice</span>
+                    </Link>
+                    <Link to="/student" onClick={() => setIsMenuOpen(false)} className={`flex items-center ${getLinkClass('/student')}`}>
+                        <FaUserPlus className="text-xl mr-2" />
+                        <span className="">Register Student</span>
+                    </Link>
+                    <Link to="/dashboard" onClick={() => setIsMenuOpen(false)} className={`flex items-center justify-center ${getLinkClass('/dashboard')}`}>
+                        <FaTachometerAlt className="text-xl mr-2" />
+                        <span className="">Dashboard</span>
+                    </Link>
+                    {/* Logout Button */}
                     <ConfirmationModal
                         isOpen={isModalOpen}
                         onClose={handleCloseModal}
                         onConfirm={handleLogout}
-                        message={`Are you sure you want Log out`}
+                        message={`Are you sure you want to log out?`}
                     />
-                    <div onClick={() => setIsModalOpen(true)} className="cursor-pointer flex items-center text-gray-300 hover:text-yellow-400 transition-colors">
-                        <span className="font-medium mr-2">Logout</span>
+                    <div onClick={() => setIsModalOpen(true)} className="cursor-pointer flex items-center justify-center py-2 px-4 hover:bg-gray-700 rounded hover:text-yellow-400 transition-colors">
+                        <span className="mr-2">Logout</span>
                         <FaSignOutAlt className="" />
                     </div>
                 </nav>
