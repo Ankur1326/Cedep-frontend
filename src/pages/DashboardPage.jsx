@@ -13,7 +13,7 @@ function DashboardPage() {
 
   const handleFetchCurrentAdmin = async () => {
     try {
-      const response = await axiosInstance.get('/current-admin');
+      const response = await axiosInstance.get('/admins/current-admin');
       setAdmin(response.data.data);
     } catch (error) {
       setError('Failed to fetch admin data.');

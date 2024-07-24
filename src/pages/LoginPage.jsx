@@ -2,8 +2,8 @@ import React, { useContext, useState } from 'react';
 import { FaEyeSlash, FaEye } from 'react-icons/fa'; // Import icons
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../helper/axiosInstance';
-import { UserType } from '../context/UserContext';
 import ModalLoader from '../components/ModalLoader';
+import ForgotPassword from '../components/ForgotPassword';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -11,11 +11,12 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [isForgotPasswordModalOpen, setForgotPasswordModalOpen] = useState(false);
 
   const handleLoginClick = async () => {
     setLoading(true)
     try {
-      const response = await axiosInstance.post('/login', {
+      const response = await axiosInstance.post('/admins/login', {
         identifier: email,
         password: password,
       });
@@ -39,6 +40,8 @@ function LoginPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       {loading && <ModalLoader />}
+
+      {isForgotPasswordModalOpen && <ForgotPassword onClose={setForgotPasswordModalOpen} />}
       <div className="w-full max-w-2xl p-8 space-y-6 bg-white rounded-lg shadow-lg">
         <div className="flex justify-center mb-3">
           <img src="/logo.png" alt="Logo" className="w-24 h-16" />
@@ -60,9 +63,12 @@ function LoginPage() {
             />
           </div>
           <div className="relative">
-            <label htmlFor="password" className="block text-start text-sm font-medium text-gray-700">
-              Password
-            </label>
+            <div className='flex items-center justify-between'>
+              <label htmlFor="password" className="block text-start text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <div onClick={() => setForgotPasswordModalOpen(true)} className='cursor-pointer hover:underline text-blue-600'>Forgot Password?</div>
+            </div>
             <input
               type={showPassword ? "text" : "password"}
               id="password"

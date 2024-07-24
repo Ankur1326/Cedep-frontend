@@ -13,7 +13,7 @@ const AdminList = () => {
   useEffect(() => {
     const getAllAdminsExceptSelf = async () => {
       try {
-        const response = await axiosInstance.get('/exclude-self');
+        const response = await axiosInstance.get('/admins/exclude-self');
         console.log(response.data.data);
         setOtherRegisteredAdmins(response.data.data)
       } catch (error) {

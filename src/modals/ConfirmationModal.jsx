@@ -9,7 +9,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }) => {
             <div className="fixed inset-0 bg-black opacity-50"></div>
             <div className="bg-white rounded-lg shadow-lg z-10 p-6 w-full max-w-md mx-4">
                 <h2 className="text-xl font-semibold mb-4">Confirm Action</h2>
-                <p className="mb-6">{message}</p>
+                <p className="mb-6 text-gray-900">{message}</p>
                 <div className="flex justify-end">
                     <button
                         onClick={onClose}

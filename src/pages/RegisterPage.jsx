@@ -27,7 +27,7 @@ function RegisterPage() {
                 alert("Enter email to send otp")
                 return;
             }
-            const response = await axiosInstance.post('/send-otp', { email });
+            const response = await axiosInstance.post('/admins/send-otp', { email, type: "OTP for verifing email" });
             if (response.status === 200) {
                 setIsOtpSent(true);
                 alert('OTP sent successfully');

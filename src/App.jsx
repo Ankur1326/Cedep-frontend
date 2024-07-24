@@ -7,6 +7,11 @@ import HomePage from './pages/HomePage'
 import DashboardPage from './pages/DashboardPage'
 import StudentPage from './pages/StudentPage'
 import { UserContext } from './context/UserContext'
+import InvoicePage from './pages/InvoicePage'
+import { Provider } from 'react-redux'
+import { store } from './store/store'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter([
   {
@@ -14,12 +19,15 @@ const router = createBrowserRouter([
     element:
       <UserContext>
         <PrivateRoute>
-          <HomePage />
+          <Provider store={store}>
+            <HomePage />
+          </Provider>
         </PrivateRoute>
       </UserContext>,
     children: [
-      { path: 'dashboard', element: <DashboardPage /> },
+      { path: 'invoice', element: <InvoicePage /> },
       { path: 'student', element: <StudentPage /> },
+      { path: 'dashboard', element: <DashboardPage /> },
     ],
   },
   { path: '/login', element: <LoginPage /> },
@@ -30,7 +38,10 @@ const router = createBrowserRouter([
 function App() {
 
   return (
-    <RouterProvider router={router} />
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
   )
 }
 
