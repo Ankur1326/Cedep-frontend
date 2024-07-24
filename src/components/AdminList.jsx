@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import axiosInstance from '../helper/axiosInstance';
 import ConfirmationModal from '../modals/ConfirmationModal';
+import { toast } from 'react-toastify';
 
 const AdminList = () => {
   const [otherRegisteredAdmins, setOtherRegisteredAdmins] = useState([]);
@@ -14,7 +15,7 @@ const AdminList = () => {
     const getAllAdminsExceptSelf = async () => {
       try {
         const response = await axiosInstance.get('/admins/exclude-self');
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setOtherRegisteredAdmins(response.data.data)
       } catch (error) {
         console.error('Error fetching admins:', error);
@@ -26,29 +27,35 @@ const AdminList = () => {
 
   const toggleAdminVerificationStatus = async (id) => {
     try {
-      await axiosInstance.patch(`/toggle-verified/${id}`);
+      const response = await axiosInstance.patch(`/admins/toggle-verified/${id}`);
+      if (response.status === 200) {
+        toast.success(`Successfully ${selectedAdmin.verifiedAdmin ? 'unverify' : 'verify'}!`)
+      }
       setOtherRegisteredAdmins((prevAdmins) =>
         prevAdmins.map((admin) =>
           admin._id === id ? { ...admin, verifiedAdmin: !admin.verifiedAdmin } : admin
         )
       );
     } catch (error) {
-      console.error('Error toggling admin verified status:', error);
-      throw error;
+      // console.error('Error toggling admin verified status:', error);
+      // throw error;
+      toast.error("Failed, Please try again")
     }
   };
 
   const toggleSuperAdminStatus = async (id) => {
     try {
-      await axiosInstance.patch(`/toggle-super-admin/${id}`);
+      const response = await axiosInstance.patch(`/admins/toggle-super-admin/${id}`);
+      if (response.status === 200) {
+        toast.success(`Successfully ${selectedAdmin.isSuperAdmin ? 'Remove Super Admin' : 'Make Super Admin'}!`)
+      }
       setOtherRegisteredAdmins((prevAdmins) =>
         prevAdmins.map((admin) =>
           admin._id === id ? { ...admin, isSuperAdmin: !admin.isSuperAdmin } : admin
         )
       );
     } catch (error) {
-      console.error('Error toggling super admin status:', error);
-      throw error;
+      toast.error("Failed, Please try again")
     }
   };
 

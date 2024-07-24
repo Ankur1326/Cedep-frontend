@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createInvoice } from '../store/slices/invoiceSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import axiosInstance from '../helper/axiosInstance';
-import { base_url } from '../helper/helper';
 import { toast } from 'react-toastify';
 
 const generateInvoiceNumber = () => {
@@ -54,7 +53,7 @@ const InvoiceForm = () => {
         const registrationNum = formdata.registrationNum
         console.log("Search Registration Number: ", registrationNum);
         try {
-            const response = await axiosInstance.post(`${base_url}/invoices/find-invoice-regNum`, { registrationNum })
+            const response = await axiosInstance.post(`/invoices/find-invoice-regNum`, { registrationNum })
             console.log(response.data.message);
             if (response.data.message === "This invoice is already exist!") {
                 // toast.success(response.message);
@@ -149,6 +148,26 @@ const InvoiceForm = () => {
                 .unwrap()
                 .then((response) => {
                     toast.success(response.message);
+                    setFormdata((prevData) => ({
+                        ...prevData,
+                        fullName: '',
+                        groupName: '',
+                        mobileNumber: '',
+                        invoice: {
+                            ...prevData.invoice,
+                            invoiceNum: generateInvoiceNumber(),
+                            invoiceDate: getTodayDate(),
+                            modeOfPayment: 'Cash',
+                            discount: '0',
+                            particulars: 'Tuition Fees',
+                            subTotal: '',
+                            taxableAmount: '',
+                            VAT: '',
+                            grandTotal: '',
+                            authorizedSign: '',
+                            printDate: getTodayDate(),
+                        },
+                    }));
                 })
                 .catch((error) => {
                     toast.error(`Error: ${error.message || 'Failed to create invoice'}`);

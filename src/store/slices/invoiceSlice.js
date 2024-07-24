@@ -7,7 +7,7 @@ export const createInvoice = createAsyncThunk(
   'invoice/createInvoice',
   async (invoiceData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`${base_url}/invoices/create-invoice`, invoiceData);
+      const response = await axiosInstance.post(`/invoices/create-invoice`, invoiceData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

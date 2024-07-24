@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use(
         // Retrieve and parse the access token
         const tokenFromStorage = localStorage.getItem("accessToken");
         const accessToken = tokenFromStorage ? JSON.parse(tokenFromStorage) : '';
-        
+
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }

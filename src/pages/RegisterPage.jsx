@@ -3,6 +3,7 @@ import { FaPaperPlane, FaCheck, FaEyeSlash, FaEye } from 'react-icons/fa'; // Im
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../helper/axiosInstance';
 import ModalLoader from '../components/ModalLoader';
+import { toast } from 'react-toastify';
 
 function RegisterPage() {
     const navigate = useNavigate();
@@ -20,60 +21,65 @@ function RegisterPage() {
     const [isOtpVerified, setIsOtpVerified] = useState(false);
 
     const handleSendOtpClick = async () => {
+        setLoading(true)
         try {
-            setLoading(true)
-            console.log(email);
             if (!email) {
-                alert("Enter email to send otp")
+                toast.error("Please enter your email to send the OTP");
                 return;
             }
             const response = await axiosInstance.post('/admins/send-otp', { email, type: "OTP for verifing email" });
             if (response.status === 200) {
                 setIsOtpSent(true);
-                alert('OTP sent successfully');
+                toast.success('OTP sent successfully. Please check your email.');
+            } else {
+                toast.error('Failed to send OTP. Please try again.');
             }
         } catch (error) {
             console.error('Error sending OTP:', error);
-            alert('Error sending OTP');
+            toast.error('An error occurred while sending OTP. Please try again later.');
         } finally {
             setLoading(false)
         }
     };
 
     const handleVerifyOtpClick = async () => {
+        console.log(email, otp);
         try {
             if (!email || !otp) {
                 alert('Please enter email and otp send otp');
                 return;
             }
-            const response = await axiosInstance.post('/verify-otp', { email, otp });
+            const response = await axiosInstance.post('/admins/verify-otp', { email, otp });
             if (response.status === 200) {
                 setIsOtpVerified(true);
-                alert('OTP verified successfully');
+                toast.success('OTP verified successfully.');
+            } else {
+                toast.error('Failed to verify OTP. Please check the OTP and try again.');
             }
         } catch (error) {
             console.error('Error verifying OTP:', error);
-            // alert('Error verifying OTP');
+            toast.error('An error occurred while verifying the OTP. Please try again later.');
         }
     };
 
     const handleRegisterClick = async (event) => {
         event.preventDefault();
         if (!isOtpVerified) {
-            alert('Please verify the OTP before registering');
+            toast.error('Please enter your email.');
             return;
         }
         if (!fullName || !username || !email || !password || !confirmPassword) {
-            alert('All fields are required');
+            toast.error('Please enter the OTP sent to your email.');
             return;
         }
         if (password !== confirmPassword) {
-            alert("Password and Confirm Password Not metched")
+            // alert("Password and Confirm Password Not metched")
+            toast.error('Password and Confirm Password do not match');
             return;
         }
 
         try {
-            const response = await axiosInstance.post('/submit-admin-details', {
+            const response = await axiosInstance.post('/admins/submit-admin-details', {
                 fullName,
                 username,
                 email,
@@ -81,14 +87,15 @@ function RegisterPage() {
                 confirmPassword,
             });
             if (response.status === 200) {
-                alert('Registration successful');
+                toast.success('Registration successful!');
                 navigate('/login');
+            } else {
+                toast.error('Registration failed. Please try again.');
             }
         } catch (error) {
             console.error('Error registering admin:', error);
-            alert('Error registering admin');
+            toast.error('An error occurred during registration. Please try again later.');
         }
-
     }
 
     return (
