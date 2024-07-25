@@ -1,20 +1,23 @@
-// DashboardPage.js
 import React, { useEffect, useState } from 'react';
-import { FaEdit, FaCheckCircle, FaTimesCircle, FaSignOutAlt } from 'react-icons/fa';
+import { FaEdit, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import AdminList from '../components/AdminList';
 import axiosInstance from '../helper/axiosInstance';
 import LogoutButton from '../components/LogoutButton';
 import Loader from '../components/Loader';
+import { toast } from 'react-toastify';
 
 function DashboardPage() {
-  const [admin, setAdmin] = useState({})
+  const [admin, setAdmin] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editMode, setEditMode] = useState(false); // State to track edit mode
+  const [editedAdmin, setEditedAdmin] = useState({}); // State to hold edited values
 
   const handleFetchCurrentAdmin = async () => {
     try {
       const response = await axiosInstance.get('/admins/current-admin');
       setAdmin(response.data.data);
+      setEditedAdmin(response.data.data); // Initialize editedAdmin with fetched data
     } catch (error) {
       setError('Failed to fetch admin data.');
     } finally {
@@ -22,16 +25,36 @@ function DashboardPage() {
     }
   };
 
-  useEffect(() => {
-    handleFetchCurrentAdmin()
-  }, [])
+  const handleSaveChanges = async () => {
+    try {
+      const response = await axiosInstance.put('/admins/update-admin-details', editedAdmin);
+      if (response.status === 200) {
+        toast.success("Successfully Updated")
+      }
+      setAdmin(editedAdmin);
+      setEditMode(false);
+    } catch (error) {
+      setError('Failed to update admin data.');
+      toast.error('Failed to update admin data')
+    }
+  };
 
-  // Handle loading state
+  const handleEditButtonClick = () => {
+    if (editMode) {
+      handleSaveChanges();
+    } else {
+      setEditMode(true);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchCurrentAdmin();
+  }, []);
+
   if (loading) {
     return <Loader />;
   }
 
-  // Handle error state
   if (error) {
     return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
   }
@@ -47,11 +70,29 @@ function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex items-center justify-center space-x-5 p-4 bg-gray-100 rounded-lg shadow-sm">
             <label className="block text-gray-600 font-semibold">Username:</label>
-            <span className="text-gray-800 font-medium">{admin?.username}</span>
+            {editMode ? (
+              <input
+                type="text"
+                value={editedAdmin.username}
+                onChange={(e) => setEditedAdmin({ ...editedAdmin, username: e.target.value })}
+                className="block px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
+              />
+            ) : (
+              <span className="text-gray-800 font-medium">{admin?.username}</span>
+            )}
           </div>
           <div className="flex items-center justify-center space-x-5 p-4 bg-gray-100 rounded-lg shadow-sm">
             <label className="block text-gray-600 font-semibold">Full Name:</label>
-            <span className="text-gray-800 font-medium">{admin?.fullName}</span>
+            {editMode ? (
+              <input
+                type="text"
+                value={editedAdmin.fullName}
+                onChange={(e) => setEditedAdmin({ ...editedAdmin, fullName: e.target.value })}
+                className="block px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
+              />
+            ) : (
+              <span className="text-gray-800 font-medium">{admin?.fullName}</span>
+            )}
           </div>
           <div className="flex items-center justify-center space-x-5 p-4 bg-gray-100 rounded-lg shadow-sm">
             <label className="block text-gray-600 font-semibold">Email:</label>
@@ -73,19 +114,18 @@ function DashboardPage() {
           </div>
         </div>
         <div className="mt-6 flex justify-end">
-          <button className="px-4 py-2 bg-[#32C5D2] text-white rounded-md hover:bg-[#28a0ab] transition-colors flex items-center">
-            <FaEdit className="mr-2" />
-            Edit
+          <button
+            className="px-4 py-2 bg-[#32C5D2] text-white rounded-md hover:bg-[#28a0ab] transition-colors flex items-center"
+            onClick={handleEditButtonClick}
+          >
+            {editMode ? <FaCheckCircle className="mr-2" /> : <FaEdit className="mr-2" />}
+            {editMode ? 'Apply' : 'Edit'}
           </button>
         </div>
       </div>
 
       {/* Render AdminList only if the user is a Super Admin */}
-      {admin.isSuperAdmin ? (
-        <AdminList />
-      )
-        : ""
-      }
+      {admin.isSuperAdmin ? <AdminList /> : null}
     </div>
   );
 }
