@@ -1,9 +1,10 @@
-// src/components/InvoiceForm.js
 import React, { useState, useEffect, useRef } from 'react';
 import { createInvoice } from '../store/slices/invoiceSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import axiosInstance from '../helper/axiosInstance';
 import { toast } from 'react-toastify';
+import ModalLoader from './ModalLoader';
+import SearchStudentInInvoice from './SearchStudentInInvoice';
 
 const generateInvoiceNumber = () => {
     return "CEDEP/" + Math.floor(100000 + Math.random() * 900000).toString();
@@ -49,13 +50,9 @@ const InvoiceForm = () => {
         }
     }, []);
 
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        const registrationNum = formdata.registrationNum
-        console.log("Search Registration Number: ", registrationNum);
+    const handleSearch = async (registrationNum) => {
         try {
-            const response = await axiosInstance.post(`/invoices/find-invoice-regNum`, { registrationNum })
-            console.log(response.data.message);
+            const response = await axiosInstance.post(`/invoices/find-invoice-details`, { registrationNum })
             if (response.data.message === "This invoice is already exist!") {
                 // toast.success(response.message);
                 toast.info("This invoice is already exist!")
@@ -72,23 +69,9 @@ const InvoiceForm = () => {
             }
 
         } catch (error) {
-
+            console.log("Error while fetching invoice details");
         }
     };
-
-    const generateRegistrationNumber = () => {
-        const length = 9;
-        let registrationNumber = '';
-
-        for (let i = 0; i < length; i++) {
-            const randomDigit = Math.floor(Math.random() * 10);
-            registrationNumber += randomDigit;
-        }
-        setFormdata((prevdata) => ({
-            ...prevdata,
-            registrationNum: registrationNumber
-        }))
-    }
 
     useEffect(() => {
         const grandTotal = Number(formdata.invoice.grandTotal) || 0;
@@ -133,18 +116,8 @@ const InvoiceForm = () => {
         }
     };
 
-    // const handleParticularChange = (index, e) => {
-    //     const { name, value } = e.target;
-    //     const updatedParticulars = formdata.particulars.map((particular, idx) =>
-    //         idx === index ? { ...particular, [name]: value } : particular
-    //     );
-    //     setFormdata({ ...formdata, particulars: updatedParticulars });
-    // };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("formdata : ", formdata);
-
         try {
             dispatch(createInvoice(formdata))
                 .unwrap()
@@ -181,6 +154,7 @@ const InvoiceForm = () => {
 
     return (
         <div className="max-w-6xl mx-auto p-8 mt-8 bg-gray-50 rounded-lg shadow-md">
+            {loading && <ModalLoader />}
             <h1 className="text-2xl font-bold text-blue-700 mb-2">Create Invoice</h1>
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
                 <img src="/public/logo.png" alt="CEDEP Logo" className="h-12 mb-4 md:mb-0" />
@@ -199,34 +173,7 @@ const InvoiceForm = () => {
                 </div>
             </div>
 
-            <form onSubmit={handleSearch} className="mb-6 max-w-lg mx-auto p-6">
-                <div className="flex flex-col gap-4 items-center" >
-                    <label className="block text-lg font-medium text-gray-700">Search Student Details:</label>
-                    <input
-                        type="number"
-                        name="registrationNum"
-                        required
-                        value={formdata.registrationNum}
-                        onChange={handleChange}
-                        placeholder="Enter Registration Num"
-                        className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FB3239] focus:border-transparent"
-                        ref={registrationInputRef}
-                    />
-                    <button
-                        type="submit"
-                        className="bg-[#FB3239] max-w-fit text-white px-4 py-2 rounded-md hover:bg-[#de2c32] focus:outline-none focus:ring-2 focus:ring-[#de2c32] transition duration-300 ease-in-out"
-                    >
-                        Search
-                    </button>
-                </div>
-                <div
-                    className="text-blue-500 text-sm underline cursor-pointer mt-4 select-none"
-                    onClick={generateRegistrationNumber}
-                >
-                    Click to generate registration number
-                </div>
-            </form>
-
+            <SearchStudentInInvoice handleSearch={handleSearch} />
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
