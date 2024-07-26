@@ -61,15 +61,14 @@ const Header = () => {
                     className={`lg:flex lg:items-center lg:space-x-6 lg:bg-transparent bg-white ${isMenuOpen ? 'absolute top-16 right-0 w-50 block shadow-lg' : 'hidden'
                         }`}
                 >
-                    <Link to="/" onClick={() => setIsMenuOpen(false)} className={getLinkClass('/')}>
+                    {/* <Link to="/" onClick={() => setIsMenuOpen(false)} className={getLinkClass('/')}>
                         Home
-                    </Link>
+                    </Link> */}
                     <Link to="/invoice" onClick={() => setIsMenuOpen(false)} className={getLinkClass('/invoice')}>
                         <span className="">Invoice</span>
                     </Link>
-                    <Link to="/student" onClick={() => setIsMenuOpen(false)} className={`flex items-center ${getLinkClass('/student')}`}>
-                        <FaUserPlus className="text-xl mr-2" />
-                        <span className="">Register Student</span>
+                    <Link to="/students" onClick={() => setIsMenuOpen(false)} className={`${getLinkClass('/students')}`}>
+                        <span className="">Students</span>
                     </Link>
                     <Link to="/dashboard" onClick={() => setIsMenuOpen(false)} className={`flex items-center justify-center ${getLinkClass('/dashboard')}`}>
                         <FaTachometerAlt className="text-xl mr-2" />

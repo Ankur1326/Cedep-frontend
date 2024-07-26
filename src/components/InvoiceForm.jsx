@@ -28,20 +28,17 @@ const InvoiceForm = () => {
         fullName: '',
         groupName: '',
         mobileNumber: '',
-        registrationNum: '',
-        invoice: {
-            invoiceNum: generateInvoiceNumber(),
-            invoiceDate: getTodayDate(),
-            modeOfPayment: 'Cash',
-            discount: '0',
-            particular: 'Tuition Fees',
-            subTotal: '',
-            taxableAmount: '',
-            VAT: '',
-            grandTotal: '',
-            authorizedSign: '',
-            printDate: getTodayDate(),
-        },
+        invoiceNum: generateInvoiceNumber(),
+        invoiceDate: getTodayDate(),
+        modeOfPayment: 'Cash',
+        discount: '0',
+        particular: 'Tuition Fees',
+        subTotal: '',
+        taxableAmount: '',
+        VAT: '',
+        grandTotal: '',
+        authorizedSign: '',
+        printDate: getTodayDate(),
     });
 
     useEffect(() => {
@@ -55,7 +52,7 @@ const InvoiceForm = () => {
             const response = await axiosInstance.post(`/invoices/find-invoice-details`, { registrationNum })
             if (response.data.message === "This invoice is already exist!") {
                 // toast.success(response.message);
-                toast.info("This invoice is already exist!")
+                toast.success("This invoice is already exist!")
                 const { fullName, mobileNumber, groupName } = response.data.data
                 setFormdata((prevData) => ({
                     ...prevData,
@@ -74,8 +71,8 @@ const InvoiceForm = () => {
     };
 
     useEffect(() => {
-        const grandTotal = Number(formdata.invoice.grandTotal) || 0;
-        const discount = Number(formdata.invoice.discount) || 0;
+        const grandTotal = Number(formdata.grandTotal) || 0;
+        const discount = Number(formdata.discount) || 0;
 
         // Calculate subTotal before discount and VAT
         const subTotal = grandTotal / 1.13;
@@ -88,32 +85,18 @@ const InvoiceForm = () => {
 
         setFormdata((prevData) => ({
             ...prevData,
-            invoice: {
-                ...prevData.invoice,
-                subTotal: Math.round(subTotal),
-                taxableAmount: Math.round(taxableAmount),
-                VAT: Math.round(VAT),
-            },
+            subTotal: Math.round(subTotal),
+            taxableAmount: Math.round(taxableAmount),
+            VAT: Math.round(VAT),
         }));
-    }, [formdata.invoice.grandTotal, formdata.invoice.discount]);
+    }, [formdata.grandTotal, formdata.discount]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        if (name in formdata.invoice) {
-            setFormdata((prevData) => ({
-                ...prevData,
-                invoice: {
-                    ...prevData.invoice,
-                    [name]: value,
-                },
-            }));
-        } else {
-            setFormdata((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
-        }
+        setFormdata((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
     };
 
     const handleSubmit = (e) => {
@@ -128,20 +111,17 @@ const InvoiceForm = () => {
                         fullName: '',
                         groupName: '',
                         mobileNumber: '',
-                        invoice: {
-                            ...prevData.invoice,
-                            invoiceNum: generateInvoiceNumber(),
-                            invoiceDate: getTodayDate(),
-                            modeOfPayment: 'Cash',
-                            discount: '0',
-                            particular: 'Tuition Fees',
-                            subTotal: '',
-                            taxableAmount: '',
-                            VAT: '',
-                            grandTotal: '',
-                            authorizedSign: '',
-                            printDate: getTodayDate(),
-                        },
+                        invoiceNum: generateInvoiceNumber(),
+                        invoiceDate: getTodayDate(),
+                        modeOfPayment: 'Cash',
+                        discount: '0',
+                        particular: 'Tuition Fees',
+                        subTotal: '',
+                        taxableAmount: '',
+                        VAT: '',
+                        grandTotal: '',
+                        authorizedSign: '',
+                        printDate: getTodayDate(),
                     }));
                 })
                 .catch((error) => {
@@ -182,7 +162,7 @@ const InvoiceForm = () => {
                         <input
                             type="text"
                             name="invoiceNum"
-                            value={formdata.invoice.invoiceNum}
+                            value={formdata.invoiceNum}
                             required
                             readOnly
                             onChange={handleChange}
@@ -194,7 +174,7 @@ const InvoiceForm = () => {
                         <input
                             type="date"
                             name="invoiceDate"
-                            value={formdata.invoice.invoiceDate}
+                            value={formdata.invoiceDate}
                             onChange={handleChange}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
                         />
@@ -241,7 +221,7 @@ const InvoiceForm = () => {
                         <select
                             name="modeOfPayment"
                             required
-                            value={formdata.invoice.modeOfPayment}
+                            value={formdata.modeOfPayment}
                             onChange={handleChange}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
                         >
@@ -257,7 +237,7 @@ const InvoiceForm = () => {
                         <input
                             type="number"
                             name="discount"
-                            value={formdata.invoice.discount}
+                            value={formdata.discount}
                             onChange={handleChange}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
                         />
@@ -282,7 +262,7 @@ const InvoiceForm = () => {
                                     <select
                                         name="particular"
                                         required
-                                        value={formdata.invoice.particular}
+                                        value={formdata.particular}
                                         onChange={handleChange}
                                         className="mt-1 block w-full px-3 py-2 border border-gray-400 rounded-md text-[14px] focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
                                     >
@@ -301,28 +281,28 @@ const InvoiceForm = () => {
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900 border-r border-gray-200">Sub Total</td>
-                                <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900">{formdata.invoice.subTotal}</td>
+                                <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900">{formdata.subTotal}</td>
                             </tr>
                             <tr>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900 border-r border-gray-200">Discount</td>
-                                <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900">{formdata.invoice.discount}</td>
+                                <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900">{formdata.discount}</td>
                             </tr>
                             <tr>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900 border-r border-gray-200">Taxable Amount</td>
-                                <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900">{formdata.invoice.taxableAmount}</td>
+                                <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900">{formdata.taxableAmount}</td>
                             </tr>
                             <tr>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900 border-r border-gray-200">13% VAT</td>
-                                <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900">{formdata.invoice.VAT}</td>
+                                <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900">{formdata.VAT}</td>
                             </tr>
                             <tr>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200"></td>
@@ -334,7 +314,7 @@ const InvoiceForm = () => {
                                         type="number"
                                         name="grandTotal"
                                         required
-                                        value={formdata.invoice.grandTotal}
+                                        value={formdata.grandTotal}
                                         onChange={handleChange}
                                         className="mt-1 block w-full min-w-36 px-3 py-2 border border-gray-400 rounded-md text-[14px] focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
                                     />
@@ -349,7 +329,7 @@ const InvoiceForm = () => {
                         <input
                             type="text"
                             name="authorizedSign"
-                            value={formdata.invoice.authorizedSign}
+                            value={formdata.authorizedSign}
                             readOnly
                             disabled
                             onChange={handleChange}
@@ -361,7 +341,7 @@ const InvoiceForm = () => {
                         <input
                             type="date"
                             name="printDate"
-                            value={formdata.invoice.printDate}
+                            value={formdata.printDate}
                             onChange={handleChange}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
                         />

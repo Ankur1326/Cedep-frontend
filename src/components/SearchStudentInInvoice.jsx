@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import axiosInstance from '../helper/axiosInstance';
 import { FaTimes } from 'react-icons/fa';
 
@@ -10,12 +10,14 @@ function SearchStudentInInvoice({ handleSearch }) {
     const handleChange = async (e) => {
         const value = e.target.value;
         setQuery(value);
+
         if (value.length >= 2) {
             try {
-                const response = await axiosInstance.get(`/invoices/matching-registrations?query=${value}`);
-                setSuggestions(response.data.data);
+                const response = await axiosInstance.get(`/invoices/matching-registrations?query=${encodeURIComponent(value)}`);
+                setSuggestions(response.data.data || []);
             } catch (error) {
                 console.error("Error fetching registrations: ", error);
+                setSuggestions([]);
             }
         } else {
             setSuggestions([]);
@@ -29,7 +31,12 @@ function SearchStudentInInvoice({ handleSearch }) {
     };
 
     return (
-        <form onSubmit={handleSearch} className="mb-6 max-w-lg mx-auto p-6">
+        <form onSubmit={(e) => {
+            e.preventDefault(); // Prevent form submission
+            if (query) {
+                handleSearch(query);
+            }
+        }} className="mb-6 max-w-lg mx-auto p-6">
             <div className="relative flex flex-col items-center">
                 <label className="block text-lg font-medium text-gray-700">Search Student Details:</label>
                 <div className="relative w-full">
@@ -39,7 +46,7 @@ function SearchStudentInInvoice({ handleSearch }) {
                         required
                         value={query}
                         onChange={handleChange}
-                        placeholder="Enter Full Name (Registration Num)"
+                        placeholder="Enter Full Name and Registration Num"
                         className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FB3239] focus:border-transparent pr-10"
                         ref={registrationInputRef}
                     />
@@ -61,7 +68,7 @@ function SearchStudentInInvoice({ handleSearch }) {
                                 className="px-4 py-2 cursor-pointer text-start hover:bg-gray-100"
                                 onClick={() => {
                                     setQuery(`${suggestion.fullName} ${suggestion.registrationNum}`);
-                                    handleSearch(suggestion.registrationNum)
+                                    handleSearch(`${suggestion.registrationNum}`);
                                     setSuggestions([]);
                                 }}
                             >
@@ -73,7 +80,7 @@ function SearchStudentInInvoice({ handleSearch }) {
                 )}
             </div>
         </form>
-    )
+    );
 }
 
-export default SearchStudentInInvoice
+export default SearchStudentInInvoice;

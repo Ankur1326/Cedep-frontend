@@ -87,7 +87,7 @@ const AdminList = () => {
 
   return (
     <div className="container mx-auto px-4 sm:px-8 max-w-6xl flex-grow bg-white shadow-md rounded-lg p-6 mt-8">
-      <h2 className="text-xl font-semibold text-gray-800">All Registered Admins</h2>
+      <h2 className="text-xl font-semibold text-gray-800">Users</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white divide-y divide-gray-200 mt-4">
           <thead>
