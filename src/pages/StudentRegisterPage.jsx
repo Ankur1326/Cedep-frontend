@@ -3,7 +3,7 @@ import CedepInformation from '../components/CedepInformation'
 import { options } from '../data/options';
 
 
-function StudentPage() {
+function StudentRegisterPage() {
   const [selectedService, setSelectedService] = useState('');
   const [selectedPost, setSelectedPost] = useState('');
   const [selectedPapers, setSelectedPapers] = useState([]);
@@ -190,4 +190,4 @@ function StudentPage() {
   )
 }
 
-export default StudentPage
+export default StudentRegisterPage
