@@ -137,7 +137,8 @@ const InvoiceForm = () => {
             {loading && <ModalLoader />}
             <h1 className="text-2xl font-bold text-blue-700 mb-2">Create Invoice</h1>
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-                <img src="/public/logo.png" alt="CEDEP Logo" className="h-12 mb-4 md:mb-0" />
+                {/* <img src="/public/logo.png" alt="CEDEP Logo" className="h-12 mb-4 md:mb-0" /> */}
+                <img src="/logo.png" alt="CEDEP Logo" className="h-12 object-contain" />
                 <div className="text-center md:text-right">
                     <p className="text-gray-600 text-sm">VAT Number: 302833348</p>
                     <div className="mt-4">
