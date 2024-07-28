@@ -1,9 +1,8 @@
 import axios from 'axios';
-// import jwt_decode from 'jwt-decode';
-import { base_url } from './helper';
+const apiUrl = import.meta.env.VITE_BACKEND_URI_PROD;
 
 const axiosInstance = axios.create({
-    baseURL: base_url,
+    baseURL: apiUrl,
     timeout: 10000, // 10 seconds
     headers: {
         'Content-Type': 'application/json',

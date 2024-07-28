@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import axiosInstance from '../helper/axiosInstance';
 import { FaCheckCircle, FaEyeSlash, FaEye, FaArrowLeft } from 'react-icons/fa';
-import { base_url } from '../helper/helper';
 
 function ForgotPassword({ onClose }) {
     const [step, setStep] = useState(1);
@@ -91,7 +90,7 @@ function ForgotPassword({ onClose }) {
         }
         try {
             setLoading(true);
-            const response = await axiosInstance.post(`${base_url}/admins/forgot-password`, { email, newPassword })
+            const response = await axiosInstance.post(`/admins/forgot-password`, { email, newPassword })
             console.log("response : ", response);
             if (response.status === 200) {
                 handleNextStep()

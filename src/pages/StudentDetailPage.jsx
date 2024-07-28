@@ -38,7 +38,7 @@ const StudentDetail = ({ }) => {
                 setLoading(true)
                 const response = await axiosInstance.get(`/invoices/get-student-invoices/${studentId}`);
                 setInvoices(response.data.data);
-                console.log(response.data.data);
+                // console.log(response.data.data);
             } catch (error) {
                 console.error('Error fetching student invoices:', error);
             } finally {
@@ -69,7 +69,7 @@ const StudentDetail = ({ }) => {
     return (
         <div className='w-full'>
             <div className="w-full border flex flex-col items-center bg-white">
-                <div className="w-full flex items-center justify-around p-6">
+                <div className="w-full flex items-center justify-around flex-col sm:flex-row p-6">
                     <div className="flex flex-col items-center md:w-1/3 mb-6 md:mb-0 md:border-r md:border-gray-200">
                         <img
                             src={student?.passportSizePhoto ? student.passportSizePhoto : '/StudentProfile.jpeg'}
@@ -144,7 +144,7 @@ const StudentDetail = ({ }) => {
                 </div>
             </div> */}
             </div>
-            <div className='flex items-center justify-evenly flex-wrap bg-white pt-5 md:w-'>
+            <div className='flex items-center  gap-5 justify-evenly flex-wrap bg-white pt-5 md:w-'>
                 {
                     isLoading ? (
                         <div className='flex w-full items-center justify-center h-20'>
@@ -165,7 +165,7 @@ const StudentDetail = ({ }) => {
                         invoices && invoices.length > 0 ?
                             (
                                 invoices.map((invoice) => (
-                                    <div className=" flex flex-col justify-between max-w-2xl mx-auto p-4 py-1 border border-gray-400">
+                                    <div className="flex flex-col justify-between max-w-2xl mx-auto p-4 py-1 border border-gray-400">
                                         <h2 className="font-bold text-lg text-center">TAX INVOICE</h2>
                                         <div className='flex flex-col gap-1'>
                                             <div className="flex justify-between items-center">

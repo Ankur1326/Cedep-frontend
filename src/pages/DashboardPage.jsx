@@ -127,7 +127,7 @@ function DashboardPage() {
       </div>
 
       {/* Render AdminList only if the user is a Super Admin */}
-      {admin.isSuperAdmin ? <AdminList /> : null}
+      {admin?.isSuperAdmin ? <AdminList /> : null}
     </div>
   );
 }

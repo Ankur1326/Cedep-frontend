@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from '../../helper/axiosInstance';
-import { base_url } from '../../helper/helper';
 
 // Define async thunk for creating an invoice
 export const createInvoice = createAsyncThunk(
   'invoice/createInvoice',
   async (invoiceData, { rejectWithValue }) => {
+    console.log("invoiceData : ", invoiceData);
     try {
       const response = await axiosInstance.post(`/invoices/create-invoice`, invoiceData);
       return response.data;
