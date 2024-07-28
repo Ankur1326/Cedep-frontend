@@ -5,6 +5,8 @@ import axiosInstance from '../helper/axiosInstance';
 import { toast } from 'react-toastify';
 import ModalLoader from './ModalLoader';
 import SearchStudentInInvoice from './SearchStudentInInvoice';
+import ReactToPrint from 'react-to-print';
+import InvoicePrint from './InvoicePrint';
 
 const generateInvoiceNumber = () => {
     return "CEDEP/" + Math.floor(100000 + Math.random() * 900000).toString();
@@ -22,6 +24,9 @@ const getTodayDate = () => {
 const InvoiceForm = () => {
     const dispatch = useDispatch();
     const { invoice, loading, error } = useSelector((state) => state.invoice);
+    const printContentRef = useRef();
+    const [printInvoice, setPrintInvoice] = useState(null)
+    const [printStudent, setPrintStudent] = useState(null)
 
     const registrationInputRef = useRef(null);
     const [formdata, setFormdata] = useState({
@@ -52,7 +57,7 @@ const InvoiceForm = () => {
             const response = await axiosInstance.post(`/invoices/find-invoice-details`, { registrationNum })
             if (response.data.message === "This invoice is already exist!") {
                 // toast.success(response.message);
-                toast.success("This invoice is already exist!")
+                toast.success("This Student is already exist!")
                 const { fullName, mobileNumber, groupName } = response.data.data
                 setFormdata((prevData) => ({
                     ...prevData,
@@ -102,9 +107,11 @@ const InvoiceForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         try {
-            dispatch(createInvoice(formdata))
+            const response = dispatch(createInvoice(formdata))
                 .unwrap()
                 .then((response) => {
+                    setPrintInvoice(response.data.invoice)
+                    setPrintStudent(response.data.student)
                     toast.success(response.message);
                     setFormdata((prevData) => ({
                         ...prevData,
@@ -137,7 +144,6 @@ const InvoiceForm = () => {
             {loading && <ModalLoader />}
             <h1 className="text-2xl font-bold text-blue-700 mb-2">Create Invoice</h1>
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-                {/* <img src="/public/logo.png" alt="CEDEP Logo" className="h-12 mb-4 md:mb-0" /> */}
                 <img src="/logo.png" alt="CEDEP Logo" className="h-12 object-contain" />
                 <div className="text-center md:text-right">
                     <p className="text-gray-600 text-sm">VAT Number: 302833348</p>
@@ -174,6 +180,7 @@ const InvoiceForm = () => {
                         <label className="block text-center md:text-start text-sm font-medium text-gray-700">Invoice Date</label>
                         <input
                             type="date"
+                            readOnly
                             name="invoiceDate"
                             value={formdata.invoiceDate}
                             onChange={handleChange}
@@ -282,7 +289,7 @@ const InvoiceForm = () => {
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900 border-r border-gray-200"></td>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900 border-r border-gray-200">Sub Total</td>
-                                <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900">{formdata.subTotal}</td>
+                                <td className="px-6 py-3 whitespace-nowrap text-[14px] text-gray-900">{formdata?.subTotal}</td>
                             </tr>
                             <tr>
                                 <td className="px-6 py-3 whitespace-nowrap text-[14px] font-medium text-gray-900 border-r border-gray-200"></td>
@@ -342,6 +349,7 @@ const InvoiceForm = () => {
                         <input
                             type="date"
                             name="printDate"
+                            readOnly
                             value={formdata.printDate}
                             onChange={handleChange}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
@@ -357,6 +365,27 @@ const InvoiceForm = () => {
                     </button>
                 </div>
             </form>
+            {
+                printInvoice &&
+                <div>
+                    <ReactToPrint
+                        trigger={() => (
+                            <button className="px-4 py-2 bg-green-600 text-white rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                Print Invoice
+                            </button>
+                        )}
+                        content={() => printContentRef.current}
+                        pageStyle="@page { size: landscape; } body { margin: 0; }"
+                    />
+                    <div style={{ display: 'none' }}>
+                        <InvoicePrint
+                            ref={printContentRef}
+                            invoice={printInvoice}
+                            student={printStudent}
+                        />
+                    </div>
+                </div>
+            }
         </div>
     );
 };

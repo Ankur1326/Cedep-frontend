@@ -13,6 +13,7 @@ import { store } from './store/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import StudentsPage from './pages/StudentsPage';
+import StudentDetail from './pages/StudentDetailPage';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
       { index: true, element: <DashboardPage /> },
       { path: 'invoice', element: <InvoicePage /> },
       { path: 'students', element: <StudentsPage /> },
+      { path: 'students/:studentId', element: <StudentDetail /> },
       { path: 'register-student', element: <StudentRegisterPage /> },
       { path: 'dashboard', element: <DashboardPage /> },
     ],

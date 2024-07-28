@@ -30,7 +30,7 @@ const Header = () => {
             : 'block py-2 px-4 hover:bg-gray-700 rounded hover:text-yellow-400 transition-colors';
 
     return (
-        <header className="bg-white shadow-md text-black p-4 fixed w-full z-10 ">
+        <header className="bg-white border-2 border-b-gray-400 shadow-md text-black p-4 fixed w-full z-10 ">
             <div className="container mx-auto flex justify-between items-center">
                 <div className="text-2xl flex items-center font-bold">
                     <Link to="/">
