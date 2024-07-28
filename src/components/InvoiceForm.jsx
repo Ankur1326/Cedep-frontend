@@ -359,7 +359,7 @@ const InvoiceForm = () => {
                 <div className="flex justify-end mt-6">
                     <button
                         type="submit"
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="px-4 py-2 bg-[#06B6D4] text-white rounded-md shadow-md hover:bg-[#2fabc1] focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-150 ease-in-out"
                     >
                         Submit
                     </button>
@@ -367,10 +367,24 @@ const InvoiceForm = () => {
             </form>
             {
                 printInvoice &&
-                <div>
+                <div className='text-center flex justify-center'>
                     <ReactToPrint
                         trigger={() => (
-                            <button className="px-4 py-2 bg-green-600 text-white rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            <button className="flex items-center px-4 py-2 bg-gray-500 text-white rounded-md shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-150 ease-in-out">
+                                <svg
+                                    className="w-5 h-5 mr-2"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M8 16h8M8 8h8M12 20v-4m0 0H8m4 0h4m4 4v-4m0 4V4m0 0H4m16 0L4 4m16 0v4m0 4v4m0 4H4"
+                                    />
+                                </svg>
                                 Print Invoice
                             </button>
                         )}

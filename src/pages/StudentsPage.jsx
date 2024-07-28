@@ -31,7 +31,7 @@ function StudentsPage() {
     }, [page]);
 
     return (
-        <div className="p-4 bg-white w-full">
+        <div className="p-4 bg-white w-full min:h-screen">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold">Student Details</h2>
                 <div>
@@ -45,7 +45,7 @@ function StudentsPage() {
                     <Link to="/register-student" className="bg-blue-500 text-white px-4 py-2 rounded-md">Register Student</Link>
                 </div>
             </div>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto ">
                 <InfiniteScroll
                     dataLength={students.length}
                     next={() => setPage((prev) => prev + 1)}

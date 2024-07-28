@@ -121,13 +121,13 @@ const AdminList = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
                     onClick={() => handleToggleClick(admin, 'toggleVerification')}
-                    className={`px-4 py-2 rounded text-white ${admin.verifiedAdmin ? 'bg-[#32C5D2] hover:bg-[#28a0ab]' : 'bg-green-600 hover:bg-green-700'} mr-2`}
+                    className={`px-4 py-2 rounded text-white ${admin.verifiedAdmin ? 'bg-[#06B6D4] hover:bg-[#0891B2]' : 'bg-green-600 hover:bg-green-700'} mr-2`}
                   >
                     {admin.verifiedAdmin ? 'Unverify' : 'Verify'}
                   </button>
                   <button
                     onClick={() => handleToggleClick(admin, "toggleSuperAdmin")}
-                    className={`px-4 py-2 rounded text-white ${admin.isSuperAdmin ? 'bg-[#8E9BAE] hover:bg-[#788392]' : 'bg-[#2F89E3] hover:bg-[#297aca]'}`}
+                    className={`px-4 py-2 rounded text-white ${admin.isSuperAdmin ? 'bg-[#8E9BAE] hover:bg-[#788392]' : 'bg-[#2F89E3] hover:bg-[#0891B2]'}`}
                   >
                     {admin.isSuperAdmin ? 'Remove Super Admin' : 'Make Super Admin'}
                   </button>

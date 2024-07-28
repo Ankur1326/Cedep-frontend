@@ -117,7 +117,7 @@ function DashboardPage() {
         </div>
         <div className="mt-6 flex justify-end">
           <button
-            className="px-4 py-2 bg-[#32C5D2] text-white rounded-md hover:bg-[#28a0ab] transition-colors flex items-center"
+            className="px-4 py-2 bg-[#06B6D4] text-white rounded-md hover:bg-[#2496aa] transition-colors flex items-center"
             onClick={handleEditButtonClick}
           >
             {editMode ? <FaCheckCircle className="mr-2" /> : <FaEdit className="mr-2" />}
