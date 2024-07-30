@@ -7,10 +7,7 @@ import ModalLoader from './ModalLoader';
 import SearchStudentInInvoice from './SearchStudentInInvoice';
 import ReactToPrint from 'react-to-print';
 import InvoicePrint from './InvoicePrint';
-
-const generateInvoiceNumber = () => {
-    return "CEDEP/" + Math.floor(100000 + Math.random() * 900000).toString();
-}
+import Button from './Button';
 
 // Function to get today's date in YYYY-MM-DD format
 const getTodayDate = () => {
@@ -33,7 +30,7 @@ const InvoiceForm = () => {
         fullName: '',
         groupName: '',
         mobileNumber: '',
-        invoiceNum: generateInvoiceNumber(),
+        invoiceNum: "",
         invoiceDate: getTodayDate(),
         modeOfPayment: 'Cash',
         discount: '0',
@@ -54,10 +51,10 @@ const InvoiceForm = () => {
 
     const handleSearch = async (registrationNum) => {
         try {
-            const response = await axiosInstance.post(`/invoices/find-invoice-details`, { registrationNum })
+            const response = await axiosInstance.post(`/invoices/find-student-details`, { registrationNum })
             if (response.data.message === "This invoice is already exist!") {
                 // toast.success(response.message);
-                toast.success("This Student is already exist!")
+                // toast.success("fetched")
                 const { fullName, mobileNumber, groupName } = response.data.data
                 setFormdata((prevData) => ({
                     ...prevData,
@@ -106,6 +103,7 @@ const InvoiceForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(formdata);
         try {
             const response = dispatch(createInvoice(formdata))
                 .unwrap()
@@ -118,7 +116,7 @@ const InvoiceForm = () => {
                         fullName: '',
                         groupName: '',
                         mobileNumber: '',
-                        invoiceNum: generateInvoiceNumber(),
+                        invoiceNum: "",
                         invoiceDate: getTodayDate(),
                         modeOfPayment: 'Cash',
                         discount: '0',
@@ -169,10 +167,8 @@ const InvoiceForm = () => {
                         <input
                             type="text"
                             name="invoiceNum"
-                            value={formdata.invoiceNum}
                             required
                             readOnly
-                            onChange={handleChange}
                             className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
                         />
                     </div>
@@ -357,13 +353,14 @@ const InvoiceForm = () => {
                     </div>
                 </div>
                 <div className="flex justify-end mt-6">
-                    <button
-                        type="submit"
-                        className="px-4 py-2 bg-[#06B6D4] text-white rounded-md shadow-md hover:bg-[#2fabc1] focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-150 ease-in-out"
-                    >
-                        Submit
-                    </button>
+                    <Button
+                        children="Submit"
+                        color="white"
+                        bgColor='[#3699FF]'
+                        hoverColor='[#2f89e3]'
+                    />
                 </div>
+
             </form>
             {
                 printInvoice &&

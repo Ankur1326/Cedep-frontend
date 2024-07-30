@@ -3,6 +3,7 @@ import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import axiosInstance from '../helper/axiosInstance';
 import ConfirmationModal from '../modals/ConfirmationModal';
 import { toast } from 'react-toastify';
+import Button from './Button';
 
 const AdminList = () => {
   const [otherRegisteredAdmins, setOtherRegisteredAdmins] = useState([]);
@@ -29,7 +30,7 @@ const AdminList = () => {
     try {
       const response = await axiosInstance.patch(`/admins/toggle-verified/${id}`);
       if (response.status === 200) {
-        toast.success(`Successfully ${selectedAdmin.verifiedAdmin ? 'unverify' : 'verify'}!`)
+        toast.success(`${selectedAdmin.verifiedAdmin ? 'Unverify' : 'Verify'} Successfully`)
       }
       setOtherRegisteredAdmins((prevAdmins) =>
         prevAdmins.map((admin) =>
@@ -47,7 +48,7 @@ const AdminList = () => {
     try {
       const response = await axiosInstance.patch(`/admins/toggle-super-admin/${id}`);
       if (response.status === 200) {
-        toast.success(`Successfully ${selectedAdmin.isSuperAdmin ? 'Remove Super Admin' : 'Make Super Admin'}!`)
+        toast.success(`${selectedAdmin.isSuperAdmin ? 'Remove Super Admin' : 'Make Super Admin'} Successfully`)
       }
       setOtherRegisteredAdmins((prevAdmins) =>
         prevAdmins.map((admin) =>
@@ -119,18 +120,29 @@ const AdminList = () => {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <button
+                  <Button
+                    children={<div className='flex items-center'>
+                      {admin.verifiedAdmin ? 'Unverify' : 'Verify'}
+                    </div>}
+                    color="white"
+                    bgColor={`${admin.verifiedAdmin ? '[#06B6D4]' : 'green-600'}`}
+                    hoverColor={`${admin.verifiedAdmin ? '[#0891B2]' : 'green-700'}`}
+                    ringColor='gray'
                     onClick={() => handleToggleClick(admin, 'toggleVerification')}
-                    className={`px-4 py-2 rounded text-white ${admin.verifiedAdmin ? 'bg-[#06B6D4] hover:bg-[#0891B2]' : 'bg-green-600 hover:bg-green-700'} mr-2`}
-                  >
-                    {admin.verifiedAdmin ? 'Unverify' : 'Verify'}
-                  </button>
-                  <button
+                    additionalClasses=''
+                  />
+
+                  <Button
+                    children={<div className='flex items-center'>
+                      {admin.isSuperAdmin ? 'Remove Super Admin' : 'Make Super Admin'}
+                    </div>}
+                    color="white"
+                    bgColor={`${admin.isSuperAdmin ? '[#8E9BAE]' : '[#2F89E3]'}`}
+                    hoverColor={`${admin.isSuperAdmin ? '[#788392]' : '[#0891B2]'}`}
+                    ringColor='gray'
                     onClick={() => handleToggleClick(admin, "toggleSuperAdmin")}
-                    className={`px-4 py-2 rounded text-white ${admin.isSuperAdmin ? 'bg-[#8E9BAE] hover:bg-[#788392]' : 'bg-[#2F89E3] hover:bg-[#0891B2]'}`}
-                  >
-                    {admin.isSuperAdmin ? 'Remove Super Admin' : 'Make Super Admin'}
-                  </button>
+                    additionalClasses='ml-4'
+                  />
                 </td>
               </tr>
             ))}

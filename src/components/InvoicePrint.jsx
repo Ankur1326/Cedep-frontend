@@ -1,15 +1,10 @@
 import React from 'react';
-
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
+import { formatDate } from '../utility/formateDate';
 
 const InvoicePrint = React.forwardRef((props, ref) => {
     const { invoice, student } = props;
+
+    // console.log(student);
 
     return (
         <div ref={ref} style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100vh' }}>
@@ -62,7 +57,7 @@ const InvoicePrint = React.forwardRef((props, ref) => {
                         <tbody>
                             <tr>
                                 <td className="border border-gray-300 text-sm text-center">1</td>
-                                <td className="border border-gray-300 text-sm  text-center">Tuition Fee</td>
+                                <td className="border border-gray-300 text-sm  text-center">{invoice?.particular}</td>
                                 <td className="border border-gray-300 text-sm text-center"></td>
                                 <td className="border border-gray-300 text-sm  text-center"></td>
                                 <td className="border border-gray-300 text-sm text-center">{invoice?.subTotal}</td>

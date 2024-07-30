@@ -12,20 +12,19 @@ const StudentTableList = ({ student, index }) => {
 
     // Navigate to the student's detail page
     const handleRowClick = () => {
+        // console.log(student._id);
+        const studentId = student._id
         navigate(`/students/${student._id}`);
     };
 
     return (
-        <tr className="hover:bg-gray-50 cursor-pointer" onClick={handleRowClick}>
-            <td className="p-3 border-r">{index + 1}.</td>
-            <td className="p-3 text-sm text-gray-700 border-r">{student.fullName}</td>
+        <tr className="hover:bg-gray-50 cursor-pointer border-r border-l" onClick={handleRowClick}>
+            <td className="p-3 border-r ">{index + 1}.</td>
+            <td className="p-3 text-sm border-r text-gray-700">{student.fullName}</td>
             <td className="p-3 text-sm border-r">{student.groupName}</td>
-            <td className="p-3 text-sm text-gray-700 border-r">{student.mobileNumber}</td>
-            <td className="p-3 text-sm text-gray-700 border-r">{student.registrationNum}</td>
-            <td className="p-3 text-sm text-gray-700 border-r">{formattedDate}</td>
-            {/* <td className="p-3 text-sm text-blue-500 hover:underline cursor-pointer">
-                Download
-            </td> */}
+            <td className="p-3 text-sm border-r text-gray-700">{student.mobileNumber}</td>
+            <td className="p-3 text-sm border-r text-gray-700">{student.registrationNum}</td>
+            <td className="p-3 text-sm border-r text-gray-700">{formattedDate}</td>
         </tr>
     );
 };

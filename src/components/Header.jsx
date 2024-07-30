@@ -36,7 +36,7 @@ const Header = () => {
                     <Link to="/">
                         <img src="/logo.png" alt="Logo" className="w-12 object-contain" />
                     </Link>
-                    <span className="ml-3 text-xl md:text-2xl font-bold text-yellow-400">Admin Panel</span>
+                    <span className="ml-3 text-xl md:text-xl font-bold text-yellow-400">Admin Panel</span>
                 </div>
                 <button
                     onClick={toggleMenu}

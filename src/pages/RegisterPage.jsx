@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../helper/axiosInstance';
 import ModalLoader from '../components/ModalLoader';
 import { toast } from 'react-toastify';
+import Button from '../components/Button';
 
 function RegisterPage() {
     const navigate = useNavigate();
@@ -265,13 +266,13 @@ function RegisterPage() {
                             </button>
                         </div>
                     </div>
-                    <button
-                        type="submit"
+                    <Button
+                        children="Register"
+                        color="white"
                         onClick={handleRegisterClick}
-                        className="w-full px-4 py-2 text-white rounded-md bg-[#3699FF] hover:bg-[#2f89e3] focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-[#2f89e3]"
-                    >
-                        Register
-                    </button>
+                        bgColor='[#3699FF]'
+                        hoverColor='[#2f89e3]'
+                    />
                 </form>
                 <div className="mt-4 text-center">
                     <p className="text-sm text-gray-600">

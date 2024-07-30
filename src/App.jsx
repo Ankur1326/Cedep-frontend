@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-loading-skeleton/dist/skeleton.css'
 import StudentsPage from './pages/StudentsPage';
 import StudentDetail from './pages/StudentDetailPage';
 
