@@ -120,30 +120,18 @@ const AdminList = () => {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-
-                  <Button
-                    children={<div className='flex items-center'>
-                      {admin.verifiedAdmin ? 'Unverify' : 'Verify'}
-                    </div>}
-                    color="white"
-                    bgColor={`${admin.verifiedAdmin ? '[#06B6D4]' : 'green-600'}`}
-                    hoverColor={`${admin.verifiedAdmin ? '[#0891B2]' : 'green-700'}`}
-                    ringColor='gray'
+                  <button
                     onClick={() => handleToggleClick(admin, 'toggleVerification')}
-                    additionalClasses=''
-                  />
-
-                  <Button
-                    children={<div className='flex items-center'>
-                      {admin.isSuperAdmin ? 'Remove Super Admin' : 'Make Super Admin'}
-                    </div>}
-                    color="white"
-                    bgColor={`${admin.isSuperAdmin ? '[#8E9BAE]' : '[#2F89E3]'}`}
-                    hoverColor={`${admin.isSuperAdmin ? '[#788392]' : '[#0891B2]'}`}
-                    ringColor='gray'
+                    className={`px-4 py-2 rounded text-white ${admin.verifiedAdmin ? 'bg-[#06B6D4] hover:bg-[#0891B2]' : 'bg-green-600 hover:bg-green-700'} mr-2`}
+                  >
+                    {admin.verifiedAdmin ? 'Unverify' : 'Verify'}
+                  </button>
+                  <button
                     onClick={() => handleToggleClick(admin, "toggleSuperAdmin")}
-                    additionalClasses='ml-4'
-                  />
+                    className={`px-4 py-2 rounded text-white ${admin.isSuperAdmin ? 'bg-[#8E9BAE] hover:bg-[#788392]' : 'bg-[#2F89E3] hover:bg-[#0891B2]'}`}
+                  >
+                    {admin.isSuperAdmin ? 'Remove Super Admin' : 'Make Super Admin'}
+                  </button>
                 </td>
               </tr>
             ))}
