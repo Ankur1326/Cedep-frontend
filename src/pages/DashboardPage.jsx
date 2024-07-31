@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 import Button from '../components/Button';
 import Skeleton from 'react-loading-skeleton';
 
-
 function DashboardPage() {
   const [admin, setAdmin] = useState({});
   const [loading, setLoading] = useState(true);

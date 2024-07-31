@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-loading-skeleton/dist/skeleton.css'
 import StudentsPage from './pages/StudentsPage';
 import StudentDetail from './pages/StudentDetailPage';
+import ErrorPage from './pages/ErrorPage';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: 'register-student', element: <StudentRegisterPage /> },
       { path: 'dashboard', element: <DashboardPage /> },
     ],
+    errorElement: <ErrorPage />
   },
   { path: '/login', element: <LoginPage /> },
   { path: '/register', element: <RegisterPage /> },

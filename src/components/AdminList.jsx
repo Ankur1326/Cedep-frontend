@@ -120,6 +120,7 @@ const AdminList = () => {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
+
                   <Button
                     children={<div className='flex items-center'>
                       {admin.verifiedAdmin ? 'Unverify' : 'Verify'}

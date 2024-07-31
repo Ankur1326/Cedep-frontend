@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FaUserPlus, FaTachometerAlt, FaSignOutAlt } from 'react-icons/fa'; // Import icons
-import LogoutButton from './LogoutButton';
+import { FaTachometerAlt, FaSignOutAlt } from 'react-icons/fa'; // Import icons
 import ConfirmationModal from '../modals/ConfirmationModal';
 
 const Header = () => {

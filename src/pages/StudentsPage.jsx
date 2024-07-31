@@ -108,7 +108,6 @@ function StudentsPage() {
     );
 }
 
-
 // const SkeletonLoader = ({ rowCount }) => {
 //     const rows = Array.from({ length: rowCount }, (_, index) => index);
 
