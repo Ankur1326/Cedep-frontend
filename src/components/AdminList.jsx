@@ -14,6 +14,7 @@ const AdminList = () => {
 
   useEffect(() => {
     const getAllAdminsExceptSelf = async () => {
+      console.log("adminlist ");
       try {
         const response = await axiosInstance.get('/admins/exclude-self');
         // console.log(response.data.data);
@@ -122,13 +123,19 @@ const AdminList = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
                     onClick={() => handleToggleClick(admin, 'toggleVerification')}
-                    className={`px-4 py-2 rounded text-white ${admin.verifiedAdmin ? 'bg-[#06B6D4] hover:bg-[#0891B2]' : 'bg-green-600 hover:bg-green-700'} mr-2`}
+                    className={`px-4 py-2 rounded text-white focus:ring-2 focus:ring-offset-2 ${admin.verifiedAdmin
+                        ? 'bg-red-400 hover:bg-red-500 focus:ring-red-400'
+                        : 'bg-green-400 hover:bg-green-500 focus:ring-green-400'
+                      } mr-2`}
                   >
                     {admin.verifiedAdmin ? 'Unverify' : 'Verify'}
                   </button>
                   <button
-                    onClick={() => handleToggleClick(admin, "toggleSuperAdmin")}
-                    className={`px-4 py-2 rounded text-white ${admin.isSuperAdmin ? 'bg-[#8E9BAE] hover:bg-[#788392]' : 'bg-[#2F89E3] hover:bg-[#0891B2]'}`}
+                    onClick={() => handleToggleClick(admin, 'toggleSuperAdmin')}
+                    className={`px-4 py-2 rounded text-white focus:ring-2 focus:ring-offset-2 ${admin.isSuperAdmin
+                        ? 'bg-purple-400 hover:bg-purple-500 focus:ring-purple-400'
+                        : 'bg-blue-400 hover:bg-blue-500 focus:ring-blue-400'
+                      } mr-2`}
                   >
                     {admin.isSuperAdmin ? 'Remove Super Admin' : 'Make Super Admin'}
                   </button>
