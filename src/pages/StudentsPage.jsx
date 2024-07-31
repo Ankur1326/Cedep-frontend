@@ -14,10 +14,10 @@ function StudentsPage() {
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true);
 
-    const fetchStudents = async (pageNumber) => {
+    const fetchStudents = async (pageNumber = 1, search = "") => {
         setLoading(true);
         try {
-            const response = await axiosInstance.get(`/students/summary?page=${pageNumber}&limit=${limit}`);
+            const response = await axiosInstance.get(`/students/summary?page=${pageNumber}&limit=${limit}&search=${search}`);
             const { data, totalPages } = response.data.data;
             setStudents(data);
             setTotalPages(totalPages);
@@ -29,13 +29,18 @@ function StudentsPage() {
     };
 
     useEffect(() => {
-        fetchStudents(page);
-    }, [page]);
+        fetchStudents(page, searchTerm);
+    }, [page, searchTerm]);
 
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= totalPages) {
             setPage(newPage);
         }
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+        setPage(1); // first page on new search
     };
 
     return (
@@ -48,7 +53,7 @@ function StudentsPage() {
                         placeholder="Search by name..."
                         className="p-2 border border-gray-300 rounded-md mr-4"
                         value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
+                        onChange={handleSearchChange}
                     />
                     <Button
                         onClick={() => navigate("/register-student")}
