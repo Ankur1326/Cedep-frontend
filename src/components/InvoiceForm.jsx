@@ -95,6 +95,12 @@ const InvoiceForm = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        // Ensure the value is not negative for grandTotal
+        if (name === 'grandTotal' && value < 0) {
+            return;
+        }
+
         setFormdata((prevData) => ({
             ...prevData,
             [name]: value,
@@ -318,6 +324,7 @@ const InvoiceForm = () => {
                                         type="number"
                                         name="grandTotal"
                                         required
+                                        min={0}
                                         value={formdata.grandTotal}
                                         onChange={handleChange}
                                         className="mt-1 block w-full min-w-36 px-3 py-2 border border-gray-400 rounded-md text-[14px] focus:outline-none focus:ring-1 focus:ring-[#3699FF]"
